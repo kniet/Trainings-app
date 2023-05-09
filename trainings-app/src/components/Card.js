@@ -4,11 +4,11 @@ import Button from "./Button";
 
 function Card() {
   return (
-    <>
+    <div className="card">
       <div className="trainingLogoDiv">
         <img
           class="trainingLogo"
-          src={"../images/logo.png"}
+          src={require("../images/logo.png")}
           alt="there should be a logo"
         ></img>
       </div>
@@ -36,7 +36,7 @@ function Card() {
       <Button label={"Button"}></Button>
 
       <TextLabel children="Registered!" className="registerLabel"></TextLabel>
-    </>
+    </div>
   );
 }
 
