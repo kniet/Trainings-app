@@ -1,10 +1,10 @@
-import HomePage from "./pages/HomePage";
+import CreateTraining from "./pages/CreateTraining";
 
 const App = () => {
 
   return (
     <>
-    <HomePage />
+    <CreateTraining />
     </>
   );
 };
