@@ -1,6 +1,7 @@
 import React from "react";
 import TextLabel from "./TextLabel";
 import Button from "./Button";
+import AdminButton from "./AdminButton";
 
 function Card() {
   return (
@@ -34,7 +35,7 @@ function Card() {
         </div>
       </div>
       <Button label={"Button"}></Button>
-
+      <AdminButton></AdminButton>
       <TextLabel children="Registered!" className="registerLabel"></TextLabel>
     </div>
   );
