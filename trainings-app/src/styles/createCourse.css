@@ -1,0 +1,94 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  margin: 50px;
+}
+
+h2 {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 25px;
+  line-height: 30px;
+  color: #000000;
+}
+
+p {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 21px;
+  color: #000000;
+  padding-bottom: 20px;
+}
+
+.first-row {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 80px;
+}
+
+.input-box {
+  width: 45%;
+}
+
+.second-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.inputCreate {
+  height: 32px;
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #c2c2c2;
+  border-radius: 15px;
+  padding: 15px;
+  margin-bottom: 50px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.orangeButtonCreate {
+  width: 152px;
+  height: 26px;
+  background: #e0995a;
+  border: 1px solid #ad6628;
+  margin: 38px 58px 38px 31px;
+  border-radius: 15px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  color: #000000;
+}
+
+.orangeButtonCreate:hover {
+  cursor: pointer;
+  background-color: #f3c7a8;
+}
+
+textarea:focus,
+input:focus {
+  outline: none;
+}
