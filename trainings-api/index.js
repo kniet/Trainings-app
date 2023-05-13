@@ -33,6 +33,15 @@ app.post("/login", (req, res) => {
   );
 });
 
+app.get("/trainings", (req, res) => {
+    const sql =
+      "SELECT id, userimg, title, description, lessons, hours FROM training";
+    db.query(sql, (err, result) => {
+      if (err) return res.json("Error");
+        return res.json(result);
+    });
+  });
+
 app.listen(8080, () => {
   console.log("Connected to backed!");
 });
