@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "../styles/loginPage.css";
-
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/Context";
+import Axios from "axios";
+import Cookies from "js-cookie";
 
 function LoginPage() {
-
+  
+  const navigate = useNavigate();
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [isAdmin, setisAdmin] = useContext(UserContext);
   const [error, setError] = useState(null);
 
   const handleUserName = (e) => {
@@ -17,7 +22,25 @@ function LoginPage() {
   };
 
   const handleSubmit = () => {
-    console.log("test");
+    Axios.post("http://localhost:8080/login", {
+      username: username,
+      password: password,
+    }).then((response) => {
+      if (response.data.message) {
+        setError(response.data.message);
+      } else {
+        if (response.data[0].isadmin === 1) {
+          console.log(response.data[0].isadmin);
+          setisAdmin(1);
+          Cookies.set("isAdmin", "true"); // store isAdmin state in a cookie
+        } else {
+          Cookies.set("isAdmin", "false");
+          console.log(isAdmin);
+        }
+        setError("");
+        navigate("/homePage");
+      }
+    });
   }
 
   return (
