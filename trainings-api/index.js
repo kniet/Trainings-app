@@ -80,7 +80,7 @@ app.post("/addData", upload.single("image"), (req, res) => {
   }
 });
 
-app.put("/updatte", upload.single("image"), (req, res) => {
+app.put("/update", upload.single("file"), (req, res) => {
   if (!req.file) {
     console.log("No file upload");
   } else {
