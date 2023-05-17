@@ -101,6 +101,16 @@ app.put("/updatte", upload.single("image"), (req, res) => {
   }
 });
 
+app.delete("/delete/:id", (req, res) => {
+
+  const sql = "DELETE FROM training WHERE ID = ?";
+
+  db.query(sql,[req.params.id], (err, result) => {
+    if (err) return res.json({ Message: "Error" });
+    return res.json({ Status: "Success" });
+  });
+});
+
 app.listen(8080, () => {
   console.log("Connected to backed!");
 });
