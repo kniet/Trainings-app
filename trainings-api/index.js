@@ -7,6 +7,7 @@ import path from "path";
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use("/uploads", express.static("uploads"));
 
 const db = mysql.createConnection({
   host: "localhost",
@@ -57,7 +58,7 @@ app.get("/trainings", (req, res) => {
   });
 });
 
-app.post("/addData", upload.single("image"), (req, res) => {
+app.post("/addData", upload.single("file"), (req, res) => {
   if (!req.file) {
     console.log("No file upload");
   } else {
