@@ -3,8 +3,12 @@ import Header from "../components/Header";
 import Input from "../components/Input";
 import "../styles/mainPage.css";
 import "../styles/createCourse.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { IdContext } from "../context/Context";
 
 function CreateTraining({ value }) {
+  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [lessons, setLessons] = useState("");
@@ -35,6 +39,35 @@ function CreateTraining({ value }) {
   function handleHoursChange(e) {
     setHours(e.target.value + " Hours");
   }
+
+  const addData = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("file", file)
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("lessons", lessons);
+    formData.append("hours", hours);
+
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    axios
+      .post("http://localhost:8080/addData", formData, config)
+      .then((res) => {
+        if (res.data.Status === "Success") {
+          console.log("Succeded");
+          navigate("/homePage");
+        } else {
+          console.log("Failed");
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div>
@@ -78,6 +111,7 @@ function CreateTraining({ value }) {
             {isCreatePage ? (
               <button
                 class="orangeButtonCreate"
+                onClick={addData}
                 type="submit"
               >
                 {value}
