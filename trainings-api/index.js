@@ -1,8 +1,8 @@
-import express from "express";
-import cors from "cors";
-import mysql from "mysql";
-import multer from "multer";
-import path from "path";
+const express = require ("express");
+const cors = require ("cors");
+const mysql = require ("mysql");
+const multer = require ("multer");
+const path = require ("path");
 
 const app = express();
 app.use(cors());
@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
     cb(null, "./uploads"); // './public/images/' directory name where save the file
   },
   filename: (req, file, cb) => {
-    cb(null, file.fieldname + "-" + Date.now + path.extname(file.originalname));
+    cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
   },
 });
 
@@ -115,3 +115,5 @@ app.delete("/delete/:id", (req, res) => {
 app.listen(8080, () => {
   console.log("Connected to backed!");
 });
+
+module.exports = app;
