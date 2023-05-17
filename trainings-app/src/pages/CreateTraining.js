@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Header from "../components/Header";
 import Input from "../components/Input";
 import "../styles/mainPage.css";
@@ -15,6 +15,7 @@ function CreateTraining({ value }) {
   const [hours, setHours] = useState("");
   const [file, setFile] = useState();
   const [isCreatePage, setisCreatePage] = useState(false);
+  const [id, setId] = useContext(IdContext);
 
   useEffect(() => {
     setisCreatePage(value === "Create new training");
@@ -58,6 +59,34 @@ function CreateTraining({ value }) {
 
     axios
       .post("http://localhost:8080/addData", formData, config)
+      .then((res) => {
+        if (res.data.Status === "Success") {
+          console.log("Succeded");
+          navigate("/homePage");
+        } else {
+          console.log("Failed");
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const updateData = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("id", id);
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("lessons", lessons);
+    formData.append("hours", hours);
+
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    axios
+      .put("https://ing-api.vercel.app/update", formData, config)
       .then((res) => {
         if (res.data.Status === "Success") {
           console.log("Succeded");
@@ -119,6 +148,7 @@ function CreateTraining({ value }) {
             ) : (
               <button
                 class="orangeButtonCreate"
+                onClick={updateData}
                 type="submit"
               >
                 {value}
