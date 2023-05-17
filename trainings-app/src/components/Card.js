@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { IdContext } from "../context/Context";
+import axios from "axios";
 
 function Card({ training }) {
   const navigate = useNavigate();
@@ -44,7 +45,18 @@ function Card({ training }) {
   };
 
   const handleDelete = () => {
-    console.log("test");
+    const cardId = training.id;
+    axios.delete(`http://localhost:8080/delete/${cardId}`)
+    .then((res) => {
+      if (res.data.Status === "Success") {
+        console.log("Succeded");
+        navigate("/homePage");
+      } else {
+        console.log("Failed");
+      }
+    })
+    .catch((err) => console.log(err));;
+    window.location.reload();
   };
 
   const mappedTraining = Object.keys(training).map((el, idx) => {
