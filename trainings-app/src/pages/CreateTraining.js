@@ -74,6 +74,7 @@ function CreateTraining({ value }) {
     e.preventDefault();
     const formData = new FormData();
     formData.append("id", id);
+    formData.append("file", file)
     formData.append("title", title);
     formData.append("description", description);
     formData.append("lessons", lessons);
