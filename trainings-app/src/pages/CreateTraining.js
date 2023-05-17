@@ -87,7 +87,7 @@ function CreateTraining({ value }) {
     };
 
     axios
-      .put("https://ing-api.vercel.app/update", formData, config)
+      .put("http://localhost:8080/update", formData, config)
       .then((res) => {
         if (res.data.Status === "Success") {
           console.log("Succeded");
