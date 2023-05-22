@@ -22,7 +22,7 @@ function LoginPage() {
   };
 
   const handleSubmit = () => {
-    Axios.post("http://localhost:8080/login", {
+    Axios.post("https://ing-api-bez-img.vercel.app/login", {
       username: username,
       password: password,
     }).then((response) => {
@@ -42,6 +42,7 @@ function LoginPage() {
       }
     });
   }
+
 
   return (
     <>
