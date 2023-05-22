@@ -14,7 +14,7 @@ function HomePage() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/trainings")
+      .get("https://ing-api-bez-img.vercel.app/trainings")
       .then((res) => {
         setTrainings(res.data);
         setIsLoading(false);

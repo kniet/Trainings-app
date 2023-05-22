@@ -44,36 +44,27 @@ function Card({ training }) {
     navigate("/updateTraining");
   };
 
-  const handleDelete = () => {
+  const handleDelete = async (e) => {
+    e.preventDefault();
     const cardId = training.id;
-    axios.delete(`http://localhost:8080/delete/${cardId}`)
+    axios.delete(`https://ing-api-bez-img.vercel.app/delete/${cardId}`)
     .then((res) => {
       if (res.data.Status === "Success") {
         console.log("Succeded");
-        navigate("/homePage");
+        window.location.reload();
       } else {
+        console.log(res.data);
         console.log("Failed");
       }
     })
-    .catch((err) => console.log(err));;
-    window.location.reload();
+    .catch((err) => console.log(err));
   };
 
   const mappedTraining = Object.keys(training).map((el, idx) => {
     if (el === "lessons" || el === "hours" || el === "id") {
       return null; // Return null for these keys since we're rendering them separately
     }
-    if (el === "userimg") {
-      return (
-        <div className="trainingLogoDiv">
-          <img
-            class="trainingLogo"
-            src={`http://localhost:8080/uploads/` + training[el]}
-            alt="there should be a logo"
-          ></img>
-        </div>
-      );
-    }
+
     return (
       <div key={idx} className={el}>
         <TextLabel className={el}>{training[el]}</TextLabel>

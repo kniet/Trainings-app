@@ -13,7 +13,6 @@ function CreateTraining({ value }) {
   const [description, setDescription] = useState("");
   const [lessons, setLessons] = useState("");
   const [hours, setHours] = useState("");
-  const [file, setFile] = useState();
   const [isCreatePage, setisCreatePage] = useState(false);
   const [id, setId] = useContext(IdContext);
 
@@ -23,10 +22,6 @@ function CreateTraining({ value }) {
 
   function handleTitleChange(e) {
     setTitle(e.target.value);
-  }
-
-  function handleFileChange(e) {
-    setFile(e.target.files[0]);
   }
 
   function handleDescriptionChange(e) {
@@ -44,26 +39,18 @@ function CreateTraining({ value }) {
   const addData = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("file", file)
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("lessons", lessons);
-    formData.append("hours", hours);
-
-    const config = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    };
-
     axios
-      .post("http://localhost:8080/addData", formData, config)
+      .post("https://ing-api-bez-img.vercel.app/addData",
+      {
+        title: title, description: description,
+        lessons: lessons, hours: hours
+      })
       .then((res) => {
         if (res.data.Status === "Success") {
           console.log("Succeded");
           navigate("/homePage");
         } else {
+          console.log(res.data);
           console.log("Failed");
         }
       })
@@ -72,22 +59,13 @@ function CreateTraining({ value }) {
 
   const updateData = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("id", id);
-    formData.append("file", file)
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("lessons", lessons);
-    formData.append("hours", hours);
-
-    const config = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    };
 
     axios
-      .put("http://localhost:8080/update", formData, config)
+      .put("https://ing-api-bez-img.vercel.app/update", 
+      {
+        title: title, description: description,
+        lessons: lessons, hours: hours, id: id
+      })
       .then((res) => {
         if (res.data.Status === "Success") {
           console.log("Succeded");
@@ -129,14 +107,6 @@ function CreateTraining({ value }) {
           </div>
         </div>
         <div class="buttons">
-          <div class="imageUpload">
-            <input
-              class="custom-file-input"
-              type="file"
-              on
-              onChange={handleFileChange}
-            ></input>
-          </div>
           <div class="confirmButton">
             {isCreatePage ? (
               <button
