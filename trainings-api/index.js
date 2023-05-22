@@ -1,32 +1,23 @@
 const express = require ("express");
 const cors = require ("cors");
 const mysql = require ("mysql");
-const multer = require ("multer");
-const path = require ("path");
+const bodyParser = require('body-parser');
 
 const app = express();
 app.use(cors());
+app.use(bodyParser.json());
 app.use(express.json());
-app.use("/uploads", express.static("uploads"));
+app.use(express.urlencoded({extended: false}))
 
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "root",
-  database: "trainingsapp",
-});
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./uploads"); // './public/images/' directory name where save the file
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
-  },
-});
-
-const upload = multer({
-  storage: storage,
+  host: process.env.DB_HOST, 
+  user: process.env.DB_USERNAME, 
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DBNAME,
+  port: process.env.DB_PORT,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
 });
 
 app.post("/login", (req, res) => {
@@ -51,63 +42,50 @@ app.post("/login", (req, res) => {
 
 app.get("/trainings", (req, res) => {
   const sql =
-    "SELECT id, userimg, title, description, lessons, hours FROM training";
+    "SELECT id, title, description, lessons, hours FROM training";
   db.query(sql, (err, result) => {
     if (err) return res.json("Error");
     return res.json(result);
   });
 });
 
-app.post("/addData", upload.single("file"), (req, res) => {
-  if (!req.file) {
-    console.log("No file upload");
-  } else {
-    const imgsrc = req.file.filename;
-    console.log(req.file);
+app.post("/addData", (req, res) => {
+  const title = req.body.title;
+  const description = req.body.description;
+  const lessons = req.body.lessons;
+  const hours = req.body.hours;
     db.query(
-      "INSERT INTO training SET ?",
-      {
-        title: req.body.title,
-        lessons: req.body.lessons,
-        description: req.body.description,
-        hours: req.body.hours,
-        userimg: imgsrc,
-      },
+      "INSERT INTO training SET title = ?, lessons = ?, description = ?, hours = ?",
+      [title, lessons, description, hours],
       (err, result) => {
-        if (err) return res.json({ Message: "Error" });
+        if (err) return res.json({ Message: err });
         return res.json({ Status: "Success" });
       }
     );
-  }
 });
 
-app.put("/update", upload.single("file"), (req, res) => {
-  if (!req.file) {
-    console.log("No file upload");
-  } else {
+app.put("/update", (req, res) => {
     const id = req.body.id;
     const title = req.body.title;
     const description = req.body.description;
     const lessons = req.body.lessons;
     const hours = req.body.hours;
-    const img = req.file.filename;
     db.query(
-      "UPDATE training SET title = ?, lessons = ?, description = ?, hours = ?, userimg = ? WHERE id = ?",
-      [title, lessons, description, hours, img, id],
+      "UPDATE training SET title = ?, lessons = ?, description = ?, hours = ? WHERE id = ?",
+      [title, lessons, description, hours, id],
       (err, result) => {
-        if (err) return res.json({ Message: "Error" });
+        if (err) return res.json({ Message: err });
         return res.json({ Status: "Success" });
       }
     );
-  }
 });
 
 app.delete("/delete/:id", (req, res) => {
 
-  const sql = "DELETE FROM training WHERE ID = ?";
-
-  db.query(sql,[req.params.id], (err, result) => {
-    if (err) return res.json({ Message: "Error" });
+  db.query(
+    "DELETE FROM training WHERE id = ?",
+    [req.params.id], (err, result) => {
+    if (err) return res.json({ Message: err });
     return res.json({ Status: "Success" });
   });
 });
